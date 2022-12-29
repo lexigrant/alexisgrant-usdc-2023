@@ -8,7 +8,7 @@
  * run your code submission.
  * 
  * The Developer Tools in Chrome are available under the "..." menu, 
- * futher hidden under the option "More Tools." In Firefox, they are 
+ * further hidden under the option "More Tools." In Firefox, they are 
  * under the hamburger (three horizontal lines), also hidden under "More Tools." 
  */
 
@@ -22,12 +22,31 @@
     /** You will need to implement your search and 
      * return the appropriate object here. */
 
-    var result = {
+    // added return guard for empty string 
+    if (searchTerm === "") {
+        return {
         "SearchTerm": "",
         "Results": []
-    };
+        }
+    }
     
-    return result; 
+    const searchResult = scannedTextObj.reduce((results, book) => {
+        const contentWithSearchTerm = book.Content.filter(
+            content => content.Text.includes(searchTerm)
+        )
+        return results.concat(contentWithSearchTerm.map(content => {
+            return {
+                "ISBN": book.ISBN,
+                "Page": content.Page,
+                "Line": content.Line
+            }
+        }))
+    }, [])
+
+    return {
+        "SearchTerm": searchTerm,
+        "Results": searchResult
+    };
 }
 
 /** Example input object. */
